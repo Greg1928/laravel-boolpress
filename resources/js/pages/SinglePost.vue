@@ -3,6 +3,7 @@
         <h1>{{post.title}}</h1>
         <p>{{post.content}}</p>
         <h3>Author: {{post.user.name}}</h3>
+        <p v-if="post.category">Category: {{post.category.name}}</p>
         <div class="mt-5">
             <router-link :to="{name: 'home'}">Home Page</router-link>
         </div>
@@ -22,6 +23,10 @@ export default {
         axios.get(`/api/posts/${this.$route.params.slug}`)
         .then((response) => {
             this.post = response.data;
+        })
+        .catch((e) => {
+            // redirect 404
+            this.$router.push({name: 'page-404'});
         });
     }
 }
