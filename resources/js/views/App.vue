@@ -1,36 +1,25 @@
 <template>
-<div>
-  <h1>Post List</h1>
-  <ul>
-    <li v-for="post in posts" :key="post.slug">
-      {{ post.title }}
-    </li>
-  </ul>
-</div>
+  <div>
+    <BaseHeader/>
+    <BaseMain/>
+    <BaseFooter/>
+  </div>
 </template>
 
 <script>
-import Axios from 'axios';
+import BaseHeader from '../components/macro/BaseHeader.vue';
+import BaseMain from '../components/macro/BaseMain.vue';
+import BaseFooter from '../components/macro/BaseFooter.vue';
 
 export default {
-    name: 'App',
-    data(){
-      return {
-        posts: []
-      };
-    },
-    created(){
-      Axios.get('http://localhost:8000/api/posts')
-      .then((response)=> {
-        this.posts = response.data;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    },
+  name: 'App',
+  components: {
+    BaseHeader,
+    BaseMain,
+    BaseFooter
+  },
 }
 </script>
 
 <style>
-
 </style>
