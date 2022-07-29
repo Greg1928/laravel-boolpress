@@ -9,9 +9,18 @@ use App\Category;
 use App\Post;
 use App\Tag;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
+    private $validation = [
+        'title' => 'required|string|max:255',
+        'content' => 'required|string|max:65535',
+        'published' => 'sometimes|accepted',
+        'category_id' => 'nullable|exists:categories,id',
+        'tags' => 'nullable|exists:tags,id',
+        'image' => 'nullable|image|max:500'
+    ];
     /**
      * Display a listing of the resource.
      *
@@ -46,17 +55,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-
-        //validation
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string|max:65535',
-            'published' => 'sometimes|accepted',
-            'category_id' => 'nullable|exists:categories,id',
-            'tags' => 'nullable|exists:tags,id'
-        ]);
         //get data from request
-        $data = $request->all();
+        $data = $request->validate($this->validation);
         $newPost = new Post();
         $newPost->fill($data);
 
@@ -65,6 +65,12 @@ class PostController extends Controller
         $newPost->published = isset($data['published']);
 
         $newPost->user_id = Auth::id();
+
+        //add image 
+        if(isset($data['image'])) {
+            $newPost->image = Storage::put('uploads', $data['image']);
+        }
+
         $newPost->save();
 
         //tags

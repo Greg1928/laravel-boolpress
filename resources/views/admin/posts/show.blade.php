@@ -15,6 +15,14 @@
                 {{$post->content}}
             </div>
         </div>
+
+        @if($post->image)
+        <div class="mb-3">
+            <img src="{{ asset("storage/{$post->image}") }}" alt="">
+        </div>
+        @endif
+
+
         @if(count($post->tags) > 0)
         <div class="mt-3">
             <h5>Tags</h5>

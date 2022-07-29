@@ -7,7 +7,7 @@
             <h1>Create new post</h1>
         </div>
         <div class="card-body">
-            <form action="{{route('admin.posts.store')}}" method="POST">
+            <form action="{{route('admin.posts.store')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="title">Title</label>
@@ -24,6 +24,13 @@
                     @enderror
                 </div>
                 {{-- @dump($categories) --}}
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <input type="file" class="form-control-file @error('image') is-invalid @enderror" id="image" name="image" value="{{old('image')}}">
+                    @error('image')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
                 <div class="form-group">
                     <label for="category">Category</label>
                     <select class="form-control @error('category_id') is-invalid @enderror" id="category" name="category_id">
