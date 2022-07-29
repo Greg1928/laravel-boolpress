@@ -2,7 +2,7 @@
   <div v-if="post" class="container">
         <h1>{{post.title}}</h1>
         <img v-if="post.image_path" :src="post.image_path" :alt="post.title">
-        <!-- <img v-if="post.image" :src="`/storage/${post.image}`" :alt="post.title"> -->
+        <!-- <img v-if="post.image" :src="`/storage/${post.image}`" :alt="post.title"> direct link-->
         <p>{{post.content}}</p>
         <h3>Author: {{post.user.name}}</h3>
         <p v-if="post.category">Category: {{post.category.name}}</p>

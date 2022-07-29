@@ -128,12 +128,7 @@ class PostController extends Controller
             abort(403);
         }
         //validation
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string|max:65535',
-            'published' => 'sometimes|accepted',
-            'category_id' => 'nullable|exists:categories,id'
-        ]);
+        $request->validate($this->validation);
         //update
         $data = $request->all();
         //slug changes if title changes
@@ -143,6 +138,16 @@ class PostController extends Controller
         $post->fill($data);
 
         $post->published = isset($data['published']);
+
+        //add image and delete if already exists
+        if(isset($data['image'])) {
+            if($post->image) {
+                Storage::delete($post->image);
+            }
+
+            $post->image = Storage::put('uploads', $data['image']);
+        }
+
 
         $post->save();
 
